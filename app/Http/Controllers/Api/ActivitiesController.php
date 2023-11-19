@@ -43,11 +43,12 @@ class ActivitiesController extends Controller
         $validate = Validator::make($storeData, [
             'id_user' => 'required',
             'id_content' => 'required',
-            'accessed_at'=> 'required|date',
         ]);
 
         if($validate->fails())
             return response(['message' => $validate->errors()], 400);
+
+        $storeData['accessed_at'] = date("Y-m-d H:i:s");
 
         $user = User::find($storeData['id_user']);
 
@@ -58,6 +59,12 @@ class ActivitiesController extends Controller
         $content = Content::find($storeData['id_content']);
         if(!$content){
             return response(['message'=> 'Content not found'], 400);
+        }
+
+        if($content['type'] == 'Paid'){
+            if($user['status'] == 0){
+                return response(['message'=> 'Tipe Content adalah Paid, User yang belum aktif tidak bisa mengaksesnya'], 403);
+            }
         }
 
         $activities= Activities::create($storeData);

@@ -15,6 +15,7 @@ class User extends Authenticatable
     public $timestamps = false;
     protected $table = "users";
     protected $primarykey = "id";
+    public $incrementing = false;
 
     /**
      * The attributes that are mass assignable.
@@ -22,6 +23,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'id', //varchar
+        'image', //varchar
         'name',
         'email',
         'password',

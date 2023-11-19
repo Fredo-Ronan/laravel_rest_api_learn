@@ -48,11 +48,15 @@ class ContentController extends Controller
             return response(['message' => $validate->errors()], 400);
         }
 
-        $content = Content::create($storeData);
-        return response([
-            'message' => 'Add Content Success',
-            'data' => $content
-        ], 200);
+        if($storeData['type'] == 'Free' || $storeData['type'] == 'Paid'){
+            $content = Content::create($storeData);
+            return response([
+                'message' => 'Add Content Success',
+                'data' => $content
+            ], 200);
+        }
+        
+        return response(['message' => 'Type hanya Free atau Paid'], 400);
     }
 
     /**
